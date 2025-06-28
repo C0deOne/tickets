@@ -1,0 +1,257 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Tickets - Underground Lair">
+  <!-- Header -->
+  <header class="p-4 border-b border-gray-800">
+    <nav class="flex justify-between items-center">
+      <div class="text-xl font-bold">UNDERGROUND LAIR</div>
+      <a href="/" class="hover:text-gray-300">HOME</a>
+    </nav>
+  </header>
+
+  <!-- Main content -->
+  <main class="min-h-screen p-8 bg-black">
+    <div class="max-w-lg mx-auto">
+      <h1 class="text-4xl font-bold mb-8 text-center text-white">GET TICKET</h1>
+      
+      <form id="ticketForm" class="space-y-6">
+        <!-- Name Input -->
+        <div>
+          <label for="name" class="block text-white font-bold mb-2">NAME</label>
+          <input 
+            type="text" 
+            id="name" 
+            name="name" 
+            required
+            class="w-full p-3 bg-gray-900 text-white border border-gray-600 focus:border-white focus:outline-none"
+            placeholder="Enter your name"
+          />
+        </div>
+
+        <!-- Email Input -->
+        <div>
+          <label for="email" class="block text-white font-bold mb-2">EMAIL</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            required
+            class="w-full p-3 bg-gray-900 text-white border border-gray-600 focus:border-white focus:outline-none"
+            placeholder="Enter your email"
+          />
+        </div>
+
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          class="w-full bg-white text-black py-4 font-bold text-xl hover:bg-gray-200 transition-colors"
+        >
+          GENERATE TICKET
+        </button>
+      </form>
+
+      <!-- Loading Message -->
+      <div id="loadingMessage" class="hidden mt-8 text-center">
+        <p class="text-white text-xl">Generating your ticket...</p>
+      </div>
+
+      <!-- Success Message (hidden initially) -->
+      <div id="successMessage" class="hidden mt-8 text-center">
+        <h2 class="text-2xl font-bold text-white mb-4">TICKET GENERATED!</h2>
+        <p class="text-white mb-4">Your ticket number: <span id="ticketNumber" class="font-bold"></span></p>
+        <button 
+          id="downloadBtn" 
+          class="bg-white text-black px-8 py-3 font-bold hover:bg-gray-200 transition-colors"
+        >
+          DOWNLOAD PDF
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="p-4 text-center text-sm text-gray-400 border-t border-gray-800">
+    © 2025 Underground Lair
+  </footer>
+
+  <!-- Load external libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js"></script>
+
+  <script>
+    // Wait for DOM to be ready
+    document.addEventListener('DOMContentLoaded', function() {
+      // Generate unique ticket number
+      function generateTicketNumber() {
+        const timestamp = Date.now().toString(36);
+        const randomNum = Math.random().toString(36).substr(2, 5);
+        return `UG-${timestamp}-${randomNum}`.toUpperCase();
+      }
+
+      // Generate QR code
+      async function generateQRCode(text) {
+        try {
+          const canvas = document.createElement('canvas');
+          await QRCode.toCanvas(canvas, text, { width: 200 });
+          return canvas.toDataURL();
+        } catch (error) {
+          console.error('Error generating QR code:', error);
+          return null;
+        }
+      }
+// Add this before the generatePDF function
+async function loadLogo() {
+  try {
+    const response = await fetch('/logo.png');
+    const blob = await response.blob();
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.readAsDataURL(blob);
+    });
+  } catch (error) {
+    console.error('Error loading logo:', error);
+    return null;
+  }
+}
+      // Generate PDF
+      async function generatePDF(name, email, ticketNumber) {
+        try {
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF();
+          
+          // Set background to black
+          doc.setFillColor(0, 0, 0);
+          doc.rect(0, 0, 210, 297, 'F');
+          
+          // Add decorative border
+          doc.setDrawColor(255, 255, 255);
+          doc.setLineWidth(2);
+          doc.rect(10, 10, 190, 277);
+          
+          // Set text color to white
+          doc.setTextColor(255, 255, 255);
+          
+          // Load and add logo
+const logoData = await loadLogo();
+if (logoData) {
+  doc.addImage(logoData, 'PNG', 90, 25, 30, 30);
+}
+          
+          // Title with custom styling
+          doc.setTextColor(255, 255, 255);
+          doc.setFontSize(24);
+          doc.setFont(undefined, 'bold');
+          doc.text('UNDERGROUND LAIR', 105, 65, { align: 'center' });
+          
+          // Subtitle
+          doc.setFontSize(16);
+          doc.setTextColor(200, 200, 200);
+          doc.text('EXCLUSIVE ACCESS TICKET', 105, 78, { align: 'center' });
+          
+          // Reset color for main content
+          doc.setTextColor(255, 255, 255);
+          
+          // Event details section
+          doc.setFontSize(16);
+          doc.setFont(undefined, 'bold');
+          doc.text('EVENT DETAILS', 20, 80);
+          
+          doc.setFontSize(12);
+          doc.setFont(undefined, 'normal');
+          doc.text('Date: TBA', 20, 95);
+          doc.text('Venue: Underground Lair', 20, 105);
+          doc.text('Time: Doors Open 8:00 PM', 20, 115);
+          
+          // Ticket holder section
+          doc.setFontSize(16);
+          doc.setFont(undefined, 'bold');
+          doc.text('TICKET HOLDER', 20, 140);
+          
+          doc.setFontSize(12);
+          doc.setFont(undefined, 'normal');
+          doc.text(`Name: ${name}`, 20, 155);
+          doc.text(`Email: ${email}`, 20, 165);
+          doc.text(`Ticket ID: ${ticketNumber}`, 20, 175);
+          doc.text(`Generated: ${new Date().toLocaleDateString()}`, 20, 185);
+          
+          // Generate and add QR code
+          const qrCodeDataUrl = await generateQRCode(ticketNumber);
+          if (qrCodeDataUrl) {
+            doc.addImage(qrCodeDataUrl, 'PNG', 140, 140, 50, 50);
+            doc.setFontSize(10);
+            doc.text('Scan for verification', 165, 200, { align: 'center' });
+          }
+          
+          // Add decorative line
+          doc.setDrawColor(255, 255, 255);
+          doc.setLineWidth(1);
+          doc.line(20, 220, 190, 220);
+          
+          // Terms and conditions
+          doc.setFontSize(10);
+          doc.setTextColor(180, 180, 180);
+          doc.text('TERMS & CONDITIONS', 20, 235);
+          doc.setFontSize(8);
+          doc.text('• This ticket is non-transferable and must be presented at the venue', 20, 245);
+          doc.text('• Valid for one entry only', 20, 252);
+          doc.text('• Underground Recordings reserves all rights', 20, 259);
+          doc.text('• No refunds or exchanges', 20, 266);
+          
+          // Footer
+          doc.setTextColor(120, 120, 120);
+          doc.text('© 2025 Underground Recordings - All Rights Reserved', 105, 280, { align: 'center' });
+          
+          // Download the PDF
+          doc.save(`UndergroundLair-Ticket-${ticketNumber}.pdf`);
+        } catch (error) {
+          console.error('Error generating PDF:', error);
+          alert('Error generating PDF. Please try again.');
+        }
+      }
+
+      // Handle form submission
+      const form = document.getElementById('ticketForm');
+      const loadingMessage = document.getElementById('loadingMessage');
+      const successMessage = document.getElementById('successMessage');
+      
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        
+        if (name && email) {
+          // Show loading message
+          form.style.display = 'none';
+          loadingMessage.classList.remove('hidden');
+          
+          // Wait a bit to ensure libraries are loaded
+          setTimeout(async () => {
+            try {
+              const ticketNumber = generateTicketNumber();
+              
+              // Show success message
+              document.getElementById('ticketNumber').textContent = ticketNumber;
+              loadingMessage.classList.add('hidden');
+              successMessage.classList.remove('hidden');
+              
+              // Set up download button
+              const downloadBtn = document.getElementById('downloadBtn');
+              downloadBtn.addEventListener('click', function() {
+                generatePDF(name, email, ticketNumber);
+              });
+            } catch (error) {
+              console.error('Error:', error);
+              loadingMessage.classList.add('hidden');
+              form.style.display = 'block';
+              alert('Error generating ticket. Please try again.');
+            }
+          }, 1000);
+        }
+      });
+    });
+  </script>
+</Layout>
