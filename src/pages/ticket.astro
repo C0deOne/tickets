@@ -1,22 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
+const base = '/';
 ---
 
-<Layout title="Tickets - Underground Lair">
-  <!-- Header -->
-  <header class="p-4 border-b border-gray-800">
-    <nav class="flex justify-between items-center">
-      <div class="text-xl font-bold">UNDERGROUND LAIR</div>
-      <a href="/" class="hover:text-gray-300">HOME</a>
-    </nav>
-  </header>
-
+<Layout>
   <!-- Main content -->
-  <main class="min-h-screen p-8 bg-black">
+  <main class="min-h-screen p-4 sm:p-8 bg-black">
     <div class="max-w-lg mx-auto">
-      <h1 class="text-4xl font-bold mb-8 text-center text-white">GET TICKET</h1>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 text-center text-white">GET TICKET</h1>
       
-      <form id="ticketForm" class="space-y-6">
+      <form id="ticketForm" class="space-y-4 sm:space-y-6">
         <!-- Name Input -->
         <div>
           <label for="name" class="block text-white font-bold mb-2">NAME</label>
@@ -25,7 +18,7 @@ import Layout from '../layouts/Layout.astro';
             id="name" 
             name="name" 
             required
-            class="w-full p-3 bg-gray-900 text-white border border-gray-600 focus:border-white focus:outline-none"
+            class="w-full p-3 bg-gray-900 text-white border border-gray-600 focus:border-white focus:outline-none text-base"
             placeholder="Enter your name"
           />
         </div>
@@ -38,7 +31,7 @@ import Layout from '../layouts/Layout.astro';
             id="email" 
             name="email" 
             required
-            class="w-full p-3 bg-gray-900 text-white border border-gray-600 focus:border-white focus:outline-none"
+            class="w-full p-3 bg-gray-900 text-white border border-gray-600 focus:border-white focus:outline-none text-base"
             placeholder="Enter your email"
           />
         </div>
@@ -46,24 +39,57 @@ import Layout from '../layouts/Layout.astro';
         <!-- Submit Button -->
         <button 
           type="submit" 
-          class="w-full bg-white text-black py-4 font-bold text-xl hover:bg-gray-200 transition-colors"
+          class="w-full bg-white text-black py-3 sm:py-4 font-bold text-lg sm:text-xl hover:bg-gray-200 transition-colors"
         >
           GENERATE TICKET
         </button>
       </form>
 
-      <!-- Loading Message -->
-      <div id="loadingMessage" class="hidden mt-8 text-center">
-        <p class="text-white text-xl">Generating your ticket...</p>
+      <!-- Ticket Preview -->
+      <div id="ticketPreview" class="container mx-auto p-4 sm:p-8 lg:p-16 flex flex-col items-center">
+        <div class="bg-white text-black rounded-lg shadow-lg p-4 sm:p-6 max-w-sm w-full">
+          <h2 class="text-xl sm:text-2xl font-bold mb-4">Ticket Info</h2>
+          <p class="mb-2 text-sm sm:text-base"><strong>Event:</strong> Underground Lair Live Event</p>
+          <p class="mb-2 text-sm sm:text-base"><strong>Date:</strong> September 27th, 2025</p>
+          <p class="mb-2 text-sm sm:text-base"><strong>Location:</strong> The Unit, PB Ind Est. Derby</p>
+          <p class="mb-2 text-sm sm:text-base"><strong>Price:</strong> £ FREE</p>
+        </div>
+        
+        <!-- Logos Section -->
+        <div class="mt-6 sm:mt-8 flex justify-center items-center space-x-4 sm:space-x-6">
+          <img 
+            src="/rig1.webp" 
+            alt="Rig 1" 
+            class="h-12 sm:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
+          />
+          <img 
+            src="/rig2.webp" 
+            alt="Rig 2" 
+            class="h-12 sm:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
+          />
+          <img 
+            src="/rig3.webp" 
+            alt="Rig 3" 
+            class="h-12 sm:h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
+          />
+        </div>
       </div>
 
-      <!-- Success Message (hidden initially) -->
-      <div id="successMessage" class="hidden mt-8 text-center">
-        <h2 class="text-2xl font-bold text-white mb-4">TICKET GENERATED!</h2>
-        <p class="text-white mb-4">Your ticket number: <span id="ticketNumber" class="font-bold"></span></p>
+      <!-- Loading Message -->
+      <div id="loadingMessage" class="hidden mt-6 sm:mt-8 text-center">
+        <div class="flex flex-col items-center">
+          <div class="animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-b-2 border-white mb-4"></div>
+          <p class="text-white text-lg sm:text-xl">Generating your ticket...</p>
+        </div>
+      </div>
+
+      <!-- Success Message -->
+      <div id="successMessage" class="hidden mt-6 sm:mt-8 text-center">
+        <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">TICKET GENERATED!</h2>
+        <p class="text-white mb-4 text-sm sm:text-base">Your ticket number: <span id="ticketNumber" class="font-bold"></span></p>
         <button 
           id="downloadBtn" 
-          class="bg-white text-black px-8 py-3 font-bold hover:bg-gray-200 transition-colors"
+          class="bg-white text-black px-6 sm:px-8 py-2 sm:py-3 font-bold text-sm sm:text-base hover:bg-gray-200 transition-colors"
         >
           DOWNLOAD PDF
         </button>
@@ -72,124 +98,245 @@ import Layout from '../layouts/Layout.astro';
   </main>
 
   <!-- Footer -->
-  <footer class="p-4 text-center text-sm text-gray-400 border-t border-gray-800">
+  <footer class="p-4 text-center text-xs sm:text-sm text-gray-400 border-t border-gray-800">
     © 2025 Underground Lair
   </footer>
 
   <!-- Load external libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js"></script>
 
   <script>
-    // Wait for DOM to be ready
     document.addEventListener('DOMContentLoaded', function() {
-      // Generate unique ticket number
+      // Check if jsPDF is loaded
+      if (!window.jspdf) {
+        console.error('jsPDF library failed to load');
+        return;
+      }
+
+      // Ticket management
+      let ticketsRemaining = 20;
+      const maxTickets = 20;
+      const resetEmail = 'reset@tickets.com';
+      const checkEmail = 'check@tickets.com';
+      const usedEmails = new Set(); // Track used email addresses
+
+      function updateTicketCounter() {
+        const ticketInfoElement = document.querySelector('#ticketPreview .bg-white');
+        if (ticketInfoElement) {
+          const existingCounter = ticketInfoElement.querySelector('.ticket-counter');
+          if (existingCounter) {
+            existingCounter.remove();
+          }
+          
+          const counterElement = document.createElement('div');
+          counterElement.className = 'ticket-counter mt-4 p-2 bg-gray-100 rounded text-center';
+          counterElement.innerHTML = `<strong>Tickets Remaining: ${ticketsRemaining}/${maxTickets}</strong>`;
+          ticketInfoElement.appendChild(counterElement);
+        }
+      }
+
       function generateTicketNumber() {
         const timestamp = Date.now().toString(36);
         const randomNum = Math.random().toString(36).substr(2, 5);
         return `UG-${timestamp}-${randomNum}`.toUpperCase();
       }
 
-      // Generate QR code
-      async function generateQRCode(text) {
+      function generateBarcode(text) {
         try {
           const canvas = document.createElement('canvas');
-          await QRCode.toCanvas(canvas, text, { width: 200 });
-          return canvas.toDataURL();
+          canvas.width = 200;
+          canvas.height = 50;
+          const ctx = canvas.getContext('2d');
+          
+          if (!ctx) {
+            throw new Error('Could not get canvas context');
+          }
+          
+          // Fill background white
+          ctx.fillStyle = 'white';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          
+          // Code 128 character set (simplified subset for alphanumeric)
+          const code128 = {
+            '0': '11011001100', '1': '11001101100', '2': '11001100110', '3': '10010011000',
+            '4': '10010001100', '5': '10001001100', '6': '10011001000', '7': '10011000100',
+            '8': '10001100100', '9': '11001001000', 'A': '11001000100', 'B': '11000100100',
+            'C': '10110011100', 'D': '10011011100', 'E': '10011001110', 'F': '10111001000',
+            'G': '10011101000', 'H': '10011100100', 'I': '11001110010', 'J': '11001011100',
+            'K': '11001001110', 'L': '11011100100', 'M': '11001110100', 'N': '11101101110',
+            'O': '11101001100', 'P': '11100101100', 'Q': '11100100110', 'R': '11101100100',
+            'S': '11100110100', 'T': '11100110010', 'U': '11011011000', 'V': '11011000110',
+            'W': '11000110110', 'X': '10100011000', 'Y': '10001011000', 'Z': '10001000110',
+            '-': '10110001000', 'START': '11010010000', 'STOP': '1100011101011'
+          };
+          
+          // Clean text - only alphanumeric and dashes
+          const cleanText = text.replace(/[^A-Z0-9-]/g, '').substring(0, 10);
+          
+          // Generate barcode pattern
+          let pattern = code128['START'];
+          for (let char of cleanText) {
+            if (code128[char]) {
+              pattern += code128[char];
+            }
+          }
+          pattern += code128['STOP'];
+          
+          // Draw barcode
+          ctx.fillStyle = 'black';
+          const barWidth = 2;
+          let x = 10;
+          
+          for (let i = 0; i < pattern.length; i++) {
+            if (pattern[i] === '1') {
+              ctx.fillRect(x, 5, barWidth, 35);
+            }
+            x += barWidth;
+          }
+          
+          // Add text below barcode
+          ctx.fillStyle = 'black';
+          ctx.font = '10px monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText(cleanText, canvas.width / 2, 48);
+          
+          return canvas.toDataURL('image/png');
         } catch (error) {
-          console.error('Error generating QR code:', error);
+          console.error('Error generating barcode:', error);
           return null;
         }
       }
-// Add this before the generatePDF function
-async function loadLogo() {
-  try {
-    const response = await fetch('/logo.png');
-    const blob = await response.blob();
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.readAsDataURL(blob);
-    });
-  } catch (error) {
-    console.error('Error loading logo:', error);
-    return null;
-  }
-}
-      // Generate PDF
+
+      async function loadLogo() {
+        try {
+          const response = await fetch('/logo.png');
+          if (!response.ok) {
+            console.warn('Logo not found at /logo.png');
+            return null;
+          }
+          const blob = await response.blob();
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = () => reject(new Error('Failed to read logo file'));
+            reader.readAsDataURL(blob);
+          });
+        } catch (error) {
+          console.warn('Could not load logo:', error.message);
+          return null;
+        }
+      }
+
       async function generatePDF(name, email, ticketNumber) {
         try {
           const { jsPDF } = window.jspdf;
           const doc = new jsPDF();
-          
-          // Set background to black
+
+          // Black background
           doc.setFillColor(0, 0, 0);
           doc.rect(0, 0, 210, 297, 'F');
-          
-          // Add decorative border
+
+          // White border
           doc.setDrawColor(255, 255, 255);
           doc.setLineWidth(2);
           doc.rect(10, 10, 190, 277);
-          
+
           // Set text color to white
           doc.setTextColor(255, 255, 255);
-          
-          // Load and add logo
-const logoData = await loadLogo();
-if (logoData) {
-  doc.addImage(logoData, 'PNG', 90, 25, 30, 30);
-}
-          
-          // Title with custom styling
-          doc.setTextColor(255, 255, 255);
+
+          // Try to load and add logo
+          const logoData = await loadLogo();
+          if (logoData) {
+            try {
+              doc.addImage(logoData, 'PNG', 90, 25, 30, 30);
+            } catch (logoError) {
+              console.warn('Could not add logo to PDF:', logoError.message);
+            }
+          }
+
+          // Title
           doc.setFontSize(24);
           doc.setFont(undefined, 'bold');
           doc.text('UNDERGROUND LAIR', 105, 65, { align: 'center' });
-          
+
           // Subtitle
           doc.setFontSize(16);
           doc.setTextColor(200, 200, 200);
-          doc.text('EXCLUSIVE ACCESS TICKET', 105, 78, { align: 'center' });
-          
-          // Reset color for main content
+          doc.text('EXCLUSIVE ACCESS', 105, 78, { align: 'center' });
+
+          // Reset text color
           doc.setTextColor(255, 255, 255);
-          
+
           // Event details section
           doc.setFontSize(16);
           doc.setFont(undefined, 'bold');
-          doc.text('EVENT DETAILS', 20, 80);
-          
+          doc.text('EVENT DETAILS', 20, 100);
+
           doc.setFontSize(12);
           doc.setFont(undefined, 'normal');
-          doc.text('Date: TBA', 20, 95);
-          doc.text('Venue: Underground Lair', 20, 105);
-          doc.text('Time: Doors Open 8:00 PM', 20, 115);
-          
+          doc.text('Date: 27th September 2025', 20, 115);
+          doc.text('Venue: The Unit, Pye Bridge Industrial Estate, Derby', 20, 125);
+          doc.text('Time: Doors Open 8:00 PM', 20, 135);
+
           // Ticket holder section
           doc.setFontSize(16);
           doc.setFont(undefined, 'bold');
-          doc.text('TICKET HOLDER', 20, 140);
-          
+          doc.text('TICKET HOLDER', 20, 160);
+
           doc.setFontSize(12);
           doc.setFont(undefined, 'normal');
-          doc.text(`Name: ${name}`, 20, 155);
-          doc.text(`Email: ${email}`, 20, 165);
-          doc.text(`Ticket ID: ${ticketNumber}`, 20, 175);
-          doc.text(`Generated: ${new Date().toLocaleDateString()}`, 20, 185);
-          
-          // Generate and add QR code
-          const qrCodeDataUrl = await generateQRCode(ticketNumber);
-          if (qrCodeDataUrl) {
-            doc.addImage(qrCodeDataUrl, 'PNG', 140, 140, 50, 50);
-            doc.setFontSize(10);
-            doc.text('Scan for verification', 165, 200, { align: 'center' });
+          doc.text(`Name: ${name}`, 20, 175);
+          doc.text(`Email: ${email}`, 20, 185);
+          doc.text(`Ticket ID: ${ticketNumber}`, 20, 195);
+          doc.text(`Generated: ${new Date().toLocaleDateString()}`, 20, 205);
+
+          // Add barcode section
+          try {
+            const barcodeDataUrl = generateBarcode(ticketNumber);
+            
+            if (barcodeDataUrl) {
+              // Add white background box for barcode
+              doc.setFillColor(255, 255, 255);
+              doc.rect(115, 155, 70, 35, 'F');
+              
+              // Add barcode image
+              doc.addImage(barcodeDataUrl, 'PNG', 120, 160, 60, 20);
+              
+              // Add ticket number below barcode
+              doc.setTextColor(0, 0, 0);
+              doc.setFontSize(10);
+              doc.setFont(undefined, 'bold');
+              doc.text(ticketNumber, 150, 195, { align: 'center' });
+              
+              // Add verification text
+              doc.setFontSize(8);
+              doc.setFont(undefined, 'normal');
+              doc.text('Present at entrance', 150, 203, { align: 'center' });
+              
+              // Reset text color
+              doc.setTextColor(255, 255, 255);
+            } else {
+              throw new Error('Barcode generation failed');
+            }
+          } catch (barcodeError) {
+            console.warn('Barcode error, using fallback:', barcodeError.message);
+            // Fallback: show ticket number prominently
+            doc.setFillColor(255, 255, 255);
+            doc.rect(115, 165, 70, 25, 'F');
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('ENTRANCE CODE', 150, 175, { align: 'center' });
+            doc.setFontSize(12);
+            doc.text(ticketNumber, 150, 185, { align: 'center' });
+            doc.setTextColor(255, 255, 255);
           }
-          
-          // Add decorative line
+
+          // Divider line
           doc.setDrawColor(255, 255, 255);
           doc.setLineWidth(1);
           doc.line(20, 220, 190, 220);
-          
+
           // Terms and conditions
           doc.setFontSize(10);
           doc.setTextColor(180, 180, 180);
@@ -197,61 +344,148 @@ if (logoData) {
           doc.setFontSize(8);
           doc.text('• This ticket is non-transferable and must be presented at the venue', 20, 245);
           doc.text('• Valid for one entry only', 20, 252);
-          doc.text('• Underground Recordings reserves all rights', 20, 259);
-          doc.text('• No refunds or exchanges', 20, 266);
-          
+          doc.text('• Cash only event', 20, 259);
+          doc.text('• Bring ID 18+', 20, 266);
+
           // Footer
           doc.setTextColor(120, 120, 120);
-          doc.text('© 2025 Underground Recordings - All Rights Reserved', 105, 280, { align: 'center' });
-          
-          // Download the PDF
+          doc.text('© 2025 The Underground Lair - All Rights Reserved', 105, 280, { align: 'center' });
+
+          // Save the PDF
           doc.save(`UndergroundLair-Ticket-${ticketNumber}.pdf`);
+          
         } catch (error) {
-          console.error('Error generating PDF:', error);
-          alert('Error generating PDF. Please try again.');
+          console.error('PDF generation error:', error);
+          alert(`Error generating PDF: ${error.message}. Please try again.`);
         }
       }
 
-      // Handle form submission
+      // Get DOM elements
       const form = document.getElementById('ticketForm');
+      const ticketPreview = document.getElementById('ticketPreview');
       const loadingMessage = document.getElementById('loadingMessage');
       const successMessage = document.getElementById('successMessage');
-      
+      const downloadBtn = document.getElementById('downloadBtn');
+
+      if (!form || !ticketPreview || !loadingMessage || !successMessage || !downloadBtn) {
+        console.error('Required DOM elements not found');
+        return;
+      }
+
+      // Form submission handler
       form.addEventListener('submit', async function(e) {
         e.preventDefault();
+
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
         
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        
-        if (name && email) {
-          // Show loading message
+        if (!nameInput || !emailInput) {
+          console.error('Form inputs not found');
+          return;
+        }
+
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+
+        // Check for reset command
+        if (email.toLowerCase() === resetEmail.toLowerCase()) {
+          ticketsRemaining = maxTickets;
+          // Note: usedEmails is NOT cleared - email history is maintained
+          updateTicketCounter();
+          alert(`Tickets reset! ${maxTickets} tickets are now available.\nNote: Email history is maintained - previously used emails cannot be used again.`);
+          // Clear the form
+          nameInput.value = '';
+          emailInput.value = '';
+          return;
+        }
+
+        // Check for ticket status command
+        if (email.toLowerCase() === checkEmail.toLowerCase()) {
+          const ticketsUsed = maxTickets - ticketsRemaining;
+          alert(`Ticket Status:\n• Tickets Remaining: ${ticketsRemaining}\n• Tickets Claimed: ${ticketsUsed}\n• Total Tickets: ${maxTickets}\n• Unique Emails Used: ${usedEmails.size}`);
+          // Clear the form
+          nameInput.value = '';
+          emailInput.value = '';
+          return;
+        }
+
+        // Check if email has already been used
+        if (usedEmails.has(email.toLowerCase())) {
+          alert('This email address has already been used to claim a ticket. Each email can only be used once.');
+          emailInput.focus();
+          return;
+        }
+
+        // Check ticket availability
+        if (ticketsRemaining <= 0) {
+          alert('Sorry, all tickets have been claimed! No more tickets are available.');
+          return;
+        }
+
+        // Validate inputs
+        if (!name) {
+          alert('Please enter your name');
+          nameInput.focus();
+          return;
+        }
+
+        if (!email) {
+          alert('Please enter your email');
+          emailInput.focus();
+          return;
+        }
+
+        // Basic email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          alert('Please enter a valid email address');
+          emailInput.focus();
+          return;
+        }
+
+        try {
+          // Hide form and preview
           form.style.display = 'none';
-          loadingMessage.classList.remove('hidden');
+          ticketPreview.style.display = 'none';
           
-          // Wait a bit to ensure libraries are loaded
-          setTimeout(async () => {
-            try {
-              const ticketNumber = generateTicketNumber();
-              
-              // Show success message
-              document.getElementById('ticketNumber').textContent = ticketNumber;
-              loadingMessage.classList.add('hidden');
-              successMessage.classList.remove('hidden');
-              
-              // Set up download button
-              const downloadBtn = document.getElementById('downloadBtn');
-              downloadBtn.addEventListener('click', function() {
-                generatePDF(name, email, ticketNumber);
-              });
-            } catch (error) {
-              console.error('Error:', error);
-              loadingMessage.classList.add('hidden');
-              form.style.display = 'block';
-              alert('Error generating ticket. Please try again.');
-            }
-          }, 1000);
+          // Show loading message
+          loadingMessage.classList.remove('hidden');
+
+          // Generate ticket number
+          const ticketNumber = generateTicketNumber();
+
+          // Simulate processing time
+          await new Promise(resolve => setTimeout(resolve, 1500));
+
+          // Decrease available tickets and mark email as used
+          ticketsRemaining--;
+          usedEmails.add(email.toLowerCase());
+
+          // Update ticket number in success message
+          const ticketNumberSpan = document.getElementById('ticketNumber');
+          if (ticketNumberSpan) {
+            ticketNumberSpan.textContent = ticketNumber;
+          }
+          
+          // Hide loading and show success
+          loadingMessage.classList.add('hidden');
+          successMessage.classList.remove('hidden');
+
+          // Set up download button
+          downloadBtn.onclick = () => generatePDF(name, email, ticketNumber);
+          
+        } catch (error) {
+          console.error('Form submission error:', error);
+          // Restore form on error
+          loadingMessage.classList.add('hidden');
+          form.style.display = 'block';
+          ticketPreview.style.display = 'block';
+          alert('An error occurred. Please try again.');
         }
       });
+
+      // Initialize ticket counter on page load
+      updateTicketCounter();
     });
   </script>
 </Layout>

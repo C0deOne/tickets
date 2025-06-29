@@ -1,32 +1,21 @@
 ---
 import Layout from '../layouts/Layout.astro';
-const base = import.meta.env.BASE_URL;
+const base = '/';
 ---
 
-<Layout title="Underground Lair">
-  <!-- Header -->
-  <header class="w-full p-4 z-10 fixed top-0 left-0 bg-black bg-opacity-70">
-    <nav class="max-w-6xl mx-auto flex justify-between items-center text-white">
-      <div class="text-lg sm:text-xl font-bold">UNDERGROUND LAIR</div>
-      <a href={`${base}ticket`} class="text-sm sm:text-base hover:text-gray-300 transition">TICKETS</a>
-    </nav>
-  </header>
+<Layout>
+ <main class="relative min-h-screen bg-black text-white flex flex-col items-center justify-center p-8">
+  <img src="/mainpic.webp" alt="Main Image" class="max-w-full h-auto scale-[1.2]" />
 
-  <!-- Main content with background image -->
-  <main
-    class="min-h-screen flex items-center justify-center px-4 pt-120 pb-20 bg-no-repeat bg-center"
-    style={`background-image: url('${base}mainpic.webp'); background-size: 35%;`}
-  >
+  <div class="absolute bottom-[20%] w-full flex justify-center">
+
     <a
       href={`${base}ticket`}
-      class="bg-white bg-opacity-80 text-black font-bold text-lg sm:text-xl px-6 sm:px-8 py-3 sm:py-4 rounded-full shadow-md hover:bg-black hover:text-white transition-all"
+      class="bg-white text-black font-bold text-lg sm:text-xl px-6 sm:px-8 py-3 sm:py-4 rounded-full shadow-md hover:bg-black hover:text-white transition-all"
     >
       CLICK TO ENTER
     </a>
-  </main>
+  </div>
+</main>
 
-  <!-- Footer -->
-  <footer class="w-full p-4 text-center text-xs sm:text-sm text-gray-400 bg-black bg-opacity-70 fixed bottom-0 left-0">
-    © 2025 The Underground Lair
-  </footer>
 </Layout>
